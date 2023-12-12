@@ -1,0 +1,58 @@
+
+
+
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.name{
+  color: #0069d9;
+}
+
+
+.size{
+  width: 60px;
+  height: 40px;
+  border-radius: 60%;
+}
+
+.myImg{
+  width: 20em;
+  height: 20em;
+  border-radius: 50%;
+
+
+}
+
+.roundImage{
+  width: 15em;
+  height: 15em;
+  border-radius: 50%; 
+  padding: 0;
+}
+
+/* body{ */
+      /* The image used */
+  /* background-image: url("/Assets/images/background\ 2.png"); */
+
+    /* Full height */
+    /* height: 100%; */
+  
+    /* Center and scale the image nicely */
+    /* background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    
+
+} */
+
+.noResumeDecore, .noContactUsDecore{
+  text-decoration: none;
+  color: black;
+}

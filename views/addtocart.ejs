@@ -1,0 +1,211 @@
+<!-- addToCart.ejs -->
+
+<%- include('partials/header.ejs') %>
+
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+    <div class="col-md-7 col-lg-8">
+      <h2 class="pb-2 border-bottom">Add to Basket</h2>
+      <form class="needs-validation" id="cart-form" action="/cart/add-to-cart" method="POST">
+        <div class="row g-3">
+          <div class="col-12">
+            <label for="basketId" class="form-label">Select Basket ID:</label>
+            <!-- <input type="text" class="form-control" id="basketId" name="basketId" placeholder="Enter basket ID" required> -->
+            <select class="form-control" id="basketId" name="basketId" required>
+              <!-- The options will be dynamically added through JavaScript -->
+            </select>
+          </div>
+          <div class="col-12">
+            <label for="productId" class="form-label">Select Product ID:</label>
+            <!-- <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter Product ID" required> -->
+            <select class="form-control" id="productId" name="productId" required>
+              <!-- The options will be dynamically added through JavaScript -->
+            </select>
+          </div>
+          <div class="col-12">
+            <label for="price" class="form-label">Price:</label>
+            <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price(10.8)" required>
+          </div>
+          <div class="col-12">
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter Quantity(1)" required>
+          </div>
+          <div class="col-12">
+            <label for="sizeCode" class="form-label">Select Size Code:</label>
+            <select class="form-control" id="sizeCode" name="sizeCode" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label for="formCode" class="form-label">Select Form Code:</label>
+            <select class="form-control" id="formCode" name="formCode" required>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <button class="w-100 btn btn-warning btn-lg" type="submit">Add to Cart</button>
+        <div id="notification" class="mt-3 alert alert-success d-none">
+          Product added to cart successfully!
+        </div>
+        <br>
+        <br>
+        <br>
+        <p>Click below button to list all items in basket(click again to refresh) </p>
+
+        <button class="w-100 btn btn-info btn-lg" type="button" onclick="listBasketItems()">List Basket Items</button>
+
+        <style>
+          #basketItemsTable {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+          }
+    
+          #basketItemsTable th, #basketItemsTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+          }
+    
+          #basketItemsTable th {
+            background-color: #f2f2f2;
+          }
+        </style>
+        <table id="basketItemsTable" style="display: none;">
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Price</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody id="basketItemsTableBody">
+            <!-- Rows will be dynamically added here -->
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.getElementById('cart-form').addEventListener('submit', async function (event) {
+      event.preventDefault(); 
+      const basketId = document.getElementById('basketId').value;
+      const productId = document.getElementById('productId').value;
+      const price = document.getElementById('price').value;
+      const quantity = document.getElementById('quantity').value;
+      const sizeCode = document.getElementById('sizeCode').value;
+      const formCode = document.getElementById('formCode').value;
+  
+      try {
+        const response = await fetch('/product/addtocart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            basketId,
+            productId,
+            price,
+            quantity,
+            sizeCode,
+            formCode,
+          }),
+        });
+  
+        if (response.ok) {
+          document.getElementById('notification').classList.remove('d-none');
+        } else {
+          console.error('Error adding to cart:', response.status);
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+      }
+    });
+
+    async function populateProductDropdown() {
+    try {
+      const response = await fetch('/product/productslist');
+      const products = await response.json();
+      const productDropdown = document.getElementById('productId');
+      productDropdown.innerHTML = '';
+      products?.products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.id;
+        option.textContent = product.id;
+        productDropdown.appendChild(option);
+      });
+
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      alert('Error fetching products');
+    }
+  }
+
+  // populate dropdown 
+  document.addEventListener('DOMContentLoaded', populateProductDropdown);
+
+  async function populateBasketDropdown() {
+  try {
+    const response = await fetch('/basket/list');
+    const baskets = await response.json();
+    const basketDropdown = document.getElementById('basketId');
+    basketDropdown.innerHTML = '';
+    baskets?.baskets.forEach(basket => {
+      const option = document.createElement('option');
+      option.value = basket.id;
+      option.textContent = basket.id;
+      basketDropdown.appendChild(option);
+    });
+
+  } catch (error) {
+    console.error('Error fetching basketIds:', error);
+    alert('Error fetching basketIds');
+  }
+}
+
+// populate dropdown 
+document.addEventListener('DOMContentLoaded', populateBasketDropdown);
+
+async function listBasketItems() {
+  try {
+    const basketIdQueryParam = document.getElementById('basketId').value;
+    const response = await fetch(`/basket/list-items?basketId=${basketIdQueryParam}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log(result);
+
+    // Show the basketItemsTable and populate it with data
+    const basketItemsTable = document.getElementById('basketItemsTable');
+    const tbody = document.getElementById('basketItemsTableBody');
+    tbody.innerHTML = ''; // Clear existing rows
+
+    result.result.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${item.IDPRODUCT}</td><td>${item.PRICE.toFixed(2)}</td><td>${item.QUANTITY}</td>`;
+      tbody.appendChild(row);
+    });
+
+    basketItemsTable.style.display = 'table';
+
+  } catch (error) {
+    console.error('Error fetching basket items:', error);
+    alert('Error fetching basket items');
+  }
+}
+  </script>
+
+
+
+
+
+<%- include('partials/footer.ejs') %>

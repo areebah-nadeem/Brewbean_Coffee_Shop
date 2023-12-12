@@ -1,0 +1,44 @@
+<!-- createProduct.ejs -->
+
+<%- include('partials/header.ejs') %>
+<!-- Add your HTML content for creating a new product here -->
+
+<div class="album py-5 bg-body-tertiary">
+  <div class="container ">
+      <div class="col-md-7 col-lg-8">
+          <h2 class="pb-2 border-bottom">Create New Product</h2>
+          <form class="needs-validation" id="contact-form" action="/product/save" method="POST">
+              <div class="row g-3">
+                  <div class="col-12">
+                      <label for="productName" class="form-label">Product Name:</label>
+                      <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter Product Name ">
+                  </div>
+                  <div class="col-12">
+                      <label for="productDescription" class="form-label">New Description</label>
+                      <input type="text" class="h-100 d-inline-block form-control" id="productDescription" name="productDescription" placeholder=" description ">
+                  </div>
+                  <br>
+                  <div class="col-12">
+                    <label for="productId" class="form-label">Product Image File Name:</label>
+                    <input type="text" class="form-control" required id="productImage" name="productImage" placeholder="Enter Product ID ">
+                </div>
+                  <div class="col-12">
+                    <label for="productPrice" class="form-label">Product Price:</label>
+                    <input type="text" class="form-control" id="productPrice" name="productPrice" placeholder="Enter Product Price" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="productActive" class="form-label">Active Status:</label>
+                    <select class="form-control" id="productActive" name="productActive" required>
+                      <option value="1">Active</option>
+                      <option value="0">Inactive</option>
+                    </select>
+                  </div>
+              </div>
+              <hr class="my-4">
+              <button class="w-100 btn btn-warning btn-lg" type="submit">Send</button>
+          </form>
+      </div>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %>

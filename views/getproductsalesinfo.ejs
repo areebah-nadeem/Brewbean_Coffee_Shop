@@ -1,0 +1,72 @@
+<%- include('partials/header.ejs') %>
+
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+    <div class="col-md-7 col-lg-8">
+      <h2 class="pb-2 border-bottom">Check Product sale</h2>
+      <form class="needs-validation" id="sale-form">
+        <div class="row g-3">
+          <div class="col-12">
+            <label for="productId" class="form-label">Select Product ID:</label>
+            <!-- <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter Product ID" required> -->
+            <select class="form-control" id="productId" name="productId" required>
+              <!-- The options will be dynamically added through JavaScript -->
+            </select>
+          </div>
+          <div class="col-12">
+            <label for="date" class="form-label">Date:</label>
+            <input type="date" class="form-control" id="date" name="date" value="2012-06-10" required>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <p id="saleResult">sale Result: </p>
+
+        <button class="w-100 btn btn-warning btn-lg" type="button" onclick="checksale()">Check sale</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs') %>
+
+<script>
+  async function checksale() {
+    // Retrieve values from the form
+    const productId = document.getElementById('productId').value;
+    const date = document.getElementById('date').value;
+
+    try {
+      const response = await fetch(`/product/check-sale?productId=${productId}&date=${date}`);
+      const { saleStatus } = await response.json();
+
+      document.getElementById('saleResult').textContent = `SALE STATUS : ${saleStatus}`;
+    } catch (error) {
+      console.error('Error checking sale:', error);
+      alert('Error checking sale');
+    }
+  }
+
+  async function populateProductDropdown() {
+    try {
+      const response = await fetch('/product/productslist');
+      const products = await response.json();
+      const productDropdown = document.getElementById('productId');
+      productDropdown.innerHTML = '';
+      products?.products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.id;
+        option.textContent = product.id;
+        productDropdown.appendChild(option);
+      });
+
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      alert('Error fetching products');
+    }
+  }
+
+  // populate dropdown 
+  document.addEventListener('DOMContentLoaded', populateProductDropdown);
+</script>

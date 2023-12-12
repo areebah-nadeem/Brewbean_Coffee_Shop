@@ -1,0 +1,54 @@
+<%- include('partials/header.ejs') %>
+
+  <div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="col-md-7 col-lg-8">
+        <h2 class="pb-2 border-bottom">Show Product State Tax</h2>
+        <form class="needs-validation" id="tax-form">
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="shopperState" class="form-label">Select Shopper's State:</label>
+              <!-- <input type="text" class="form-control" id="shopperState" name="shopperState"
+                placeholder="Enter Shopper's State" required value="VA"> -->
+                <select class="form-control" id="shopperState" name="shopperState" required>
+                  <option value="VA">VA</option>
+                  <option value="NC">NC</option>
+                  <option value="SC">SC</option>
+                </select>
+            </div>
+            <div class="col-12">
+              <label for="basketSubtotal" class="form-label">Basket Subtotal:</label>
+              <input type="number" class="form-control" id="basketSubtotal" name="basketSubtotal"
+                placeholder="Enter Basket Subtotal" required>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <p id="taxAmount">Tax Amount: $0.00</p>
+
+          <button class="w-100 btn btn-warning btn-lg" type="button" onclick="calculateTax()">Calculate Tax</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer.ejs') %>
+
+    <script>
+      async function calculateTax() {
+        // Retrieve values from the form
+        const shopperState = document.getElementById('shopperState').value;
+        const basketSubtotal = parseFloat(document.getElementById('basketSubtotal').value);
+
+        try {
+          const response = await fetch(`/product/calculate-tax?shopperState=${shopperState}&basketSubtotal=${basketSubtotal}`);
+          const { taxAmount } = await response.json();
+
+          document.getElementById('taxAmount').textContent = `Tax Amount: $${taxAmount}`;
+        } catch (error) {
+          console.error('Error calculating tax:', error);
+          alert('Error calculating tax');
+        }
+      }
+    </script>

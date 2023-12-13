@@ -9,11 +9,7 @@ router.post('/insert-basket-status', async function (req, res, next) {
   try {
     const { basketId, date, shipper, shipNum } = req.body;
     const connection = await connectToOracleDB();
-    // const query = `
-    //   INSERT INTO bb_basketstatus (idstatus, idbasket, idstage, dtstage, shipper, shippingnum)
-    //   VALUES (bb_status_seq.NEXTVAL, ${parseInt(basketId)}, 3, TO_DATE('${date}', 'YYYY-MM-DD'), '${shipper}', '${shipNum}')
-    // `;
-    // const result = await connection.execute(query, {}, { autoCommit: true });
+   
 
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE status_ship_sp (

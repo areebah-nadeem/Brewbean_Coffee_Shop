@@ -8,8 +8,7 @@
           <div class="row g-3">
             <div class="col-12">
               <label for="shopperState" class="form-label">Select Shopper's State:</label>
-              <!-- <input type="text" class="form-control" id="shopperState" name="shopperState"
-                placeholder="Enter Shopper's State" required value="VA"> -->
+           
                 <select class="form-control" id="shopperState" name="shopperState" required>
                   <option value="VA">VA</option>
                   <option value="NC">NC</option>
@@ -37,7 +36,7 @@
 
     <script>
       async function calculateTax() {
-        // Retrieve values from the form
+       
         const shopperState = document.getElementById('shopperState').value;
         const basketSubtotal = parseFloat(document.getElementById('basketSubtotal').value);
 

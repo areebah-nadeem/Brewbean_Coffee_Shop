@@ -12,17 +12,7 @@ router.post('/update-description', async function (req, res, next) {
   try {
     const connection = await connectToOracleDB();
     const { productDescription, productId } = req.body;
-    // const queryParams = {
-    //   p_productid: { val: parseInt(productId) },
-    //   p_description: { val: productDescription }
-    // };
-    // const result = await connection.execute(
-    //   `UPDATE bb_product
-    //   SET description = :p_description
-    //   WHERE idproduct = :p_productid`,
-    //   queryParams,
-    //   // { autoCommit: true } // Commit the transaction automatically
-    // );
+ 
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE upd_description_sp (
             p_productid   IN bb_product.idproduct%TYPE,
@@ -42,7 +32,7 @@ router.post('/update-description', async function (req, res, next) {
       { productId, productDescription }
     );
 
-    res.redirect('/product/list'); // Redirect to the product list page
+    res.redirect('/product/list'); 
   } catch (error) {
     console.error('Error updating product:', error);
     res.status(500).send('Error updating product');
@@ -95,15 +85,7 @@ router.get('/calculate-tax', async function (req, res, next) {
 
     const connection = await connectToOracleDB();
 
-    // const query = `SELECT TAXRATE FROM BB_TAX WHERE STATE = :taxState`;
-
-    // const result = await connection.execute(query, { taxState: shopperState });
-
-    // if (result.rows.length === 0) {
-    //   return res.status(404).send('Tax rate not found for the specified state');
-    // }
-
-    // const taxRate = result.rows[0][0];
+   
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE tax_cost_sp (
         p_state     IN bb_tax.state%TYPE,
@@ -147,16 +129,7 @@ router.post('/save', async function (req, res, next) {
     const connection = await connectToOracleDB();
     const { productImage, productName, productPrice, productDescription, productActive } = req.body;
 
-    // const query = `INSERT INTO BB_PRODUCT (IDPRODUCT, PRODUCTNAME, DESCRIPTION, PRICE, ACTIVE)
-    //                VALUES (:productId, :productName, :productDescription, :productPrice, :productActive)`;
-
-    // const result = await connection.execute(query, {
-    //   productId,
-    //   productName,
-    //   productDescription,
-    //   productPrice,
-    //   productActive,
-    // }, { autoCommit: true });
+ 
 
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE prod_add_sp (
@@ -200,7 +173,7 @@ router.post('/save', async function (req, res, next) {
       { productName, productDescription, productImage, productPrice, productActive }
     );
 
-    res.redirect('/product/list'); // Redirect to the product list page
+    res.redirect('/product/list'); 
 
   } catch (error) {
     console.error('Error creating product:', error);
@@ -208,52 +181,7 @@ router.post('/save', async function (req, res, next) {
   }
 });
 
-// Update a product
-router.post('/update/:productId', async function (req, res, next) {
-  try {
-    const connection = await connectToOracleDB();
-    const { productName, productPrice } = req.body;
-    const productId = req.params.productId;
-    return { productName, productId }
-    const query = `UPDATE TEST1
-                   SET PRODUCT_NAME = :productName, PRODUCT_PRICE = :productPrice
-                   WHERE PRODUCT_ID = :productId`;
 
-    const result = await connection.execute(query, {
-      productId,
-      productName,
-      productPrice,
-    });
-
-    await connection.execute('COMMIT'); // Commit the transaction
-
-    res.redirect('/products/list'); // Redirect to the product list page
-
-  } catch (error) {
-    console.error('Error updating product:', error);
-    res.status(500).send('Error updating product');
-  }
-});
-
-// Delete a product
-router.post('/delete/:productId', async function (req, res, next) {
-  try {
-    const connection = await connectToOracleDB();
-    const productId = req.params.productId;
-
-    const query = `DELETE FROM TEST1 WHERE PRODUCT_ID = :productId`;
-
-    const result = await connection.execute(query, { productId });
-
-    await connection.execute('COMMIT'); // Commit the transaction
-
-    res.redirect('/products/list'); // Redirect to the product list page
-
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    res.status(500).send('Error deleting product');
-  }
-});
 
 
 // add to cart
@@ -263,10 +191,7 @@ router.post('/addtocart', async function (req, res, next) {
 
     const connection = await connectToOracleDB();
 
-    // const query = `
-    //   INSERT INTO bb_basketitem (idbasketitem, idproduct, idbasket, price, quantity, option1, option2)
-    //   VALUES (bb_idbasketitem_seq.NEXTVAL, ${productId}, ${basketId}, ${price}, ${quantity}, ${sizeCode}, ${formCode})
-    // `;
+  
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE BASKET_ADD_SP (
             p_basketid  IN bb_basketitem.idbasket%TYPE,
@@ -364,7 +289,7 @@ router.get('/check-sale', async function (req, res, next) {
 
 router.get('/check-stock', async function (req, res, next) {
   try {
-    connection = await connectToOracleDB();//oracledb.getConnection(dbConfig);
+    connection = await connectToOracleDB();
     const { basketId } = req.query;
     await connection.execute(
       `CREATE OR REPLACE PROCEDURE ck_instock_sp (
@@ -420,55 +345,7 @@ router.get('/check-stock', async function (req, res, next) {
 });
 
 router.get('/calculate-spending', async function (req, res, next) {
-  // try {
-  //   connection = await connectToOracleDB();
-  //   const { shopperId } = req.query;
-  //   // create procedure
-  //   await connection.execute(
-  //     `CREATE OR REPLACE FUNCTION TOT_PURCH_SF (
-  //       p_shopperid IN bb_shopper.idshopper%TYPE
-  //   ) RETURN NUMBER IS
-  //       v_total bb_basket.total%TYPE;
-  //   BEGIN
-  //       SELECT SUM(bb_basket.total)
-  //       INTO v_total
-  //       FROM bb_shopper
-  //           FULL OUTER JOIN bb_basket ON bb_shopper.idshopper = bb_basket.idshopper
-  //       WHERE bb_shopper.idshopper = p_shopperid
-  //       AND bb_basket.orderplaced = 1;
 
-  //       IF v_total IS NULL THEN
-  //           v_total:=0;
-  //       END IF;
-
-  //       RETURN v_total;
-  //       COMMIT;
-  //   END TOT_PURCH_SF;`
-  //   );
-  //   const result = await connection.execute(
-  //     `DECLARE
-  //       v_msg VARCHAR2(30);
-  //     BEGIN
-  //       TOT_PURCH_SF(p_shopperid => :shopperId, p_msg => :v_msg);
-  //     END;`,
-  //     {
-  //       shopperId,
-  //       v_msg: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
-  //     }
-  //   );
-  //   console.log(result.outBinds);
-  //   res.json({ stockStatus: result.outBinds.v_msg });
-  // } catch (err) {
-  //   console.error(err);
-  // } finally {
-  //   if (connection) {
-  //     try {
-  //       await connection.close();
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // }
   try {
     connection = await connectToOracleDB();
     const { shopperId } = req.query;

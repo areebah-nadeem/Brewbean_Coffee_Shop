@@ -10,16 +10,16 @@
         <div class="row g-3">
           <div class="col-12">
             <label for="basketId" class="form-label">Select Basket ID:</label>
-            <!-- <input type="text" class="form-control" id="basketId" name="basketId" placeholder="Enter basket ID" required> -->
+            
             <select class="form-control" id="basketId" name="basketId" required>
-              <!-- The options will be dynamically added through JavaScript -->
+             
             </select>
           </div>
           <div class="col-12">
             <label for="productId" class="form-label">Select Product ID:</label>
-            <!-- <input type="text" class="form-control" id="productId" name="productId" placeholder="Enter Product ID" required> -->
+            
             <select class="form-control" id="productId" name="productId" required>
-              <!-- The options will be dynamically added through JavaScript -->
+            
             </select>
           </div>
           <div class="col-12">
@@ -85,7 +85,7 @@
             </tr>
           </thead>
           <tbody id="basketItemsTableBody">
-            <!-- Rows will be dynamically added here -->
+          
           </tbody>
         </table>
       </form>
@@ -148,7 +148,7 @@
     }
   }
 
-  // populate dropdown 
+
   document.addEventListener('DOMContentLoaded', populateProductDropdown);
 
   async function populateBasketDropdown() {
@@ -170,7 +170,7 @@
   }
 }
 
-// populate dropdown 
+
 document.addEventListener('DOMContentLoaded', populateBasketDropdown);
 
 async function listBasketItems() {
@@ -184,10 +184,10 @@ async function listBasketItems() {
     const result = await response.json();
     console.log(result);
 
-    // Show the basketItemsTable and populate it with data
+   
     const basketItemsTable = document.getElementById('basketItemsTable');
     const tbody = document.getElementById('basketItemsTableBody');
-    tbody.innerHTML = ''; // Clear existing rows
+    tbody.innerHTML = '';
 
     result.result.forEach(item => {
       const row = document.createElement('tr');

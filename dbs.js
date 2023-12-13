@@ -8,7 +8,7 @@ async function connectToOracleDB() {
     return connection;
   } catch (err) {
     console.error('Error connecting to Oracle SQL database:', err);
-    throw err; // Re-throw the error to handle it where this function is called
+    throw err; 
   }
 }
 

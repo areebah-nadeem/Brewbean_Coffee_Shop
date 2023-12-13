@@ -25,7 +25,6 @@
 
         <button class="w-100 btn btn-info btn-lg" type="button" onclick="listSpending()">List Spending</button>
 
-        <!-- Table to display list spending results -->
         <style>
           #spendingTable {
             border-collapse: collapse;
@@ -51,7 +50,7 @@
             </tr>
           </thead>
           <tbody id="spendingTableBody">
-            <!-- Rows will be dynamically added here -->
+          
           </tbody>
         </table>
       </form>
@@ -64,7 +63,7 @@
 
 <script>
   async function calcSpending() {
-    // Retrieve values from the form
+   
     const shopperId = document.getElementById('shopperId').value;
 
     try {
@@ -88,10 +87,10 @@
       const result = await response.json();
       console.log(result);
 
-      // Show the spendingTable and populate it with data
+     
       const spendingTable = document.getElementById('spendingTable');
       const tbody = document.getElementById('spendingTableBody');
-      tbody.innerHTML = ''; // Clear existing rows
+      tbody.innerHTML = ''; 
 
       result.result.forEach(item => {
         const row = document.createElement('tr');

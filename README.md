@@ -64,8 +64,11 @@ Report 2: Total Purchase Report
 Frontend: Report2Frame component (GUI)
 Backend: TOT_PURCH_SF function
 
---Allows employee to update an order staaus to be added to shipping information
-  CREATE OR REPLACE PROCEDURE status_ship_sp (
+
+     --Allows employee to update an order staaus to be added to shipping information
+  
+  
+     CREATE OR REPLACE PROCEDURE status_ship_sp (
               p_basketid IN bb_basketstatus.idbasket%TYPE,
               p_date     IN VARCHAR2,
               p_shipper  IN bb_basketstatus.shipper%TYPE,
@@ -89,15 +92,15 @@ Backend: TOT_PURCH_SF function
               );
               COMMIT;
           END status_ship_sp;
-BEGIN
+         BEGIN
           status_ship_sp(p_basketid => :basketId, 
             p_date => :date, 
             p_shipper => :shipper, 
             p_shipnum => :shipNum);
       END;
       
---create gui and procedure to update product description
-CREATE OR REPLACE PROCEDURE upd_description_sp (
+       --create gui and procedure to update product description
+         CREATE OR REPLACE PROCEDURE upd_description_sp (
             p_productid   IN bb_product.idproduct%TYPE,
             p_description IN bb_product.description%TYPE
         ) IS

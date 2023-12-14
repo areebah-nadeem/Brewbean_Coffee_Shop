@@ -1,3 +1,13 @@
+# Steps to Run Code:
+First, to start the code, please open the root folder in VS Code.
+After opening, you will need to run the following command:
+npm install
+This command will install all the necessary dependencies.
+Finally, to run the file, enter the command:
+node server
+
+
+
 # Brewbean Coffee Shop Application
 Setting Up the Database:
 

@@ -1,3 +1,3 @@
-# brewbean 
+# Brewbean Coffee Shop Application
 
 
